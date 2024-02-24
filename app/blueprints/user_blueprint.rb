@@ -8,6 +8,6 @@ class UserBlueprint < Blueprinter::Base
   end
 
   view :extended do
-    fields :username, :email
+    fields :username, :email, :created_at, :updated_at
   end
 end
