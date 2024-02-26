@@ -5,6 +5,7 @@ class Pet < ApplicationRecord
   validates :sex, presence: true
   validates :birthday, presence: true
   validates :is_vaccinated, presence: true
+  validates :is_fixed, presence: true
 
   belongs_to :owner
 end
