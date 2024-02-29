@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  get 'sessions/create'
-  post '/login', to: 'sessions#create'
+  scope '/' do
+    post '/login', to: 'sessions#create'
+  end
+  
   resources :users, only: [:create, :show]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
