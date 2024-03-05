@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_26_210713) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_05_035706) do
+  create_table "friendship_requests", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "recipient_id", null: false
+    t.integer "friendship_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friendship_id"], name: "index_friendship_requests_on_friendship_id"
+    t.index ["recipient_id"], name: "index_friendship_requests_on_recipient_id"
+    t.index ["sender_id"], name: "index_friendship_requests_on_sender_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.integer "pet_id", null: false
+    t.integer "friend_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["pet_id"], name: "index_friendships_on_pet_id"
+  end
+
   create_table "owners", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -43,6 +65,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_26_210713) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "friendship_requests", "friendships"
+  add_foreign_key "friendship_requests", "recipients"
+  add_foreign_key "friendship_requests", "senders"
+  add_foreign_key "friendships", "friends"
+  add_foreign_key "friendships", "pets"
   add_foreign_key "owners", "users"
   add_foreign_key "pets", "owners"
 end
