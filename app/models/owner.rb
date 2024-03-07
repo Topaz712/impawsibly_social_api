@@ -5,4 +5,5 @@ class Owner < ApplicationRecord
 
   has_many :pets
   has_many :profiles, through: :pets
+  after_create :create_profile
 end
