@@ -1,7 +1,10 @@
 class Pet < ApplicationRecord
-  validates :name, :species, :breed, :sex, :birthday, :is_vaccinated, :is_fixed, presence: true
+  validates :name, :species, :breed, :sex, :birthday, presence: true
+  validates :is_vaccinated, :is_fixed, presence: true, inclusion: { in: [true, false] }
 
   belongs_to :owner
+
+  has_one :profile
 
   has_many :sent_friendship_requests, class_name: 'FriendshipRequest', foreign_key: 'sender_id', dependent: :destroy
   has_many :received_friendship_requests, class_name: 'FriendshipRequest', foreign_key: 'recipient_id', dependent: :destroy
