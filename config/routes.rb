@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   end
   
   resources :users, only: [:create, :show]
+  resources :friendship_requests, only: [:create]
+  resources :friendships, only: [:create]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
