@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_07_115315) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_11_202025) do
   create_table "friendship_requests", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "recipient_id", null: false
@@ -57,6 +57,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_115315) do
     t.index ["owner_id"], name: "index_pets_on_owner_id"
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.text "content"
+    t.integer "pet_profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pet_profile_id"], name: "index_posts_on_pet_profile_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.text "bio"
     t.integer "pet_id", null: false
@@ -82,6 +90,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_115315) do
   add_foreign_key "friendships", "pets"
   add_foreign_key "owners", "users"
   add_foreign_key "pets", "owners"
+  add_foreign_key "posts", "pet_profiles"
   add_foreign_key "profiles", "owners"
   add_foreign_key "profiles", "pets"
 end
