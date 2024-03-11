@@ -4,7 +4,7 @@ class Pet < ApplicationRecord
 
   belongs_to :owner
 
-  has_one :profile
+  has_one :profile, dependent: :destroy
   after_create :create_profile
 
   has_many :sent_friendship_requests, class_name: 'FriendshipRequest', foreign_key: 'sender_id', dependent: :destroy

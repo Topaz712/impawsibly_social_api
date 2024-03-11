@@ -3,7 +3,8 @@ class Owner < ApplicationRecord
 
   belongs_to :user
 
-  has_many :pets
-  has_many :profiles, through: :pets
+  has_one :profile, dependent: :destroy
+  has_many :pets, dependent: :destroy
+  
   after_create :create_profile
 end
