@@ -12,4 +12,8 @@ class Pet < ApplicationRecord
 
   has_many :friendships, foreign_key: 'pet_id', dependent: :destroy
   has_many :friends, through: :friendships, source: :friend
+
+  def age
+    ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor
+  end
 end
