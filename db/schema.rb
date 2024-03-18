@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_18_051815) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
   create_table "comments", force: :cascade do |t|
     t.integer "pet_id", null: false
     t.string "commentable_type", null: false
@@ -81,6 +81,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_051815) do
     t.index ["owner_id"], name: "index_pets_on_owner_id"
   end
 
+  create_table "playdates", force: :cascade do |t|
+    t.integer "owner_id", null: false
+    t.integer "pet_id", null: false
+    t.text "title"
+    t.text "content"
+    t.boolean "species_specific"
+    t.integer "pet_limit"
+    t.datetime "start_date_time"
+    t.datetime "end_date_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_playdates_on_owner_id"
+    t.index ["pet_id"], name: "index_playdates_on_pet_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "content"
     t.integer "pet_profile_id", null: false
@@ -115,6 +130,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_051815) do
   add_foreign_key "friendships", "pets"
   add_foreign_key "owners", "users"
   add_foreign_key "pets", "owners"
+  add_foreign_key "playdates", "owners"
+  add_foreign_key "playdates", "pets"
   add_foreign_key "posts", "pet_profiles"
   add_foreign_key "profiles", "owners"
   add_foreign_key "profiles", "pets"
