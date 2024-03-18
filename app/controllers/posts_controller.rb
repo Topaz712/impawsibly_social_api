@@ -13,8 +13,19 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = @profile.posts.new(post_params)
-
+    pet = Pet.find_by(id: params[:pet_id])
+    if pet.nil?
+      render json: { error: "Pet not found" }, status: :not_found
+      return
+    end
+    
+    profile = pet.profile
+    if profile.nil?
+      render json: { error: "Profile not found for the pet" }, status: :not_found
+      return
+    end
+    
+    post = profile.posts.new(post_params)
     if post.save
       render json: post, status: :created
     else

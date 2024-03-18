@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
   # build_profile automatically handles associations
   def create
     if params[:pet_id].present?
-      @pet = Pet.find(params[:pet_id])
+      @pet = Pet.find_by(params[:pet_id])
       @profile = @pet.build_profile(profile_params)
     else
       @profile = @owner.build_profile(profile_params)
