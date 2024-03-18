@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_request
-  before_action :set_profile
+  before_action :set_pet_and_profile, only: [:create]
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
@@ -40,8 +40,9 @@ class PostsController < ApplicationController
 
   private
 
-  def set_profile
-    @profile = Profile.find(params[:profile_id])
+  def set_pet_and_profile
+    @pet = Pet.find(params[:pet_id])
+    @profile = @pet.profile
   end
 
   def set_post
@@ -50,6 +51,6 @@ class PostsController < ApplicationController
 
   # specific pet profile for post
   def post_params
-    params.permit(:content, :pet_profile_id)
+    params.permit(:content)
   end
 end

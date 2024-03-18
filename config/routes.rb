@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   resources :friendship_requests, only: [:create]
   resources :friendships, only: [:create]
 
+  resources :pets do
+    resources :posts, only: [:create]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
