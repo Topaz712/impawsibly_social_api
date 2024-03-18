@@ -67,7 +67,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_202025) do
 
   create_table "profiles", force: :cascade do |t|
     t.text "bio"
-    t.integer "pet_id", null: false
+    t.integer "pet_id"
     t.integer "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
