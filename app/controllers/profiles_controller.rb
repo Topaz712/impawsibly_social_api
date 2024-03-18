@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_request
   before_action :set_owner, only: [:create, :destroy]
-  before_action :set_owner, only: [:create, :destroy]
+  before_action :set_pet, only: [:create, :destroy]
   before_action :set_profile, only: [:show, :update, :destroy]
 
   def show
