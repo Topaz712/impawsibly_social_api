@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_18_050236) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_18_051815) do
   create_table "comments", force: :cascade do |t|
     t.integer "pet_id", null: false
     t.string "commentable_type", null: false
@@ -42,6 +42,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_050236) do
     t.datetime "updated_at", null: false
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["pet_id"], name: "index_friendships_on_pet_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "locationable_type", null: false
+    t.integer "locationable_id", null: false
+    t.string "zip_code"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locationable_type", "locationable_id"], name: "index_locations_on_locationable"
   end
 
   create_table "owners", force: :cascade do |t|
