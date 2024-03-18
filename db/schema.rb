@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_11_202025) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_18_050236) do
+  create_table "comments", force: :cascade do |t|
+    t.integer "pet_id", null: false
+    t.string "commentable_type", null: false
+    t.integer "commentable_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["pet_id"], name: "index_comments_on_pet_id"
+  end
+
   create_table "friendship_requests", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "recipient_id", null: false
@@ -83,6 +94,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_202025) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "pets"
   add_foreign_key "friendship_requests", "friendships"
   add_foreign_key "friendship_requests", "recipients"
   add_foreign_key "friendship_requests", "senders"

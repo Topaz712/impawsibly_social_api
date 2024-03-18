@@ -4,6 +4,10 @@ class Pet < ApplicationRecord
 
   belongs_to :owner
 
+  # associations
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  
   has_one :profile, dependent: :destroy
   after_create :create_profile
 
