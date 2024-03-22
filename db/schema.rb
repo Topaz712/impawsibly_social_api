@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_22_163021) do
   create_table "comments", force: :cascade do |t|
     t.integer "pet_id", null: false
     t.string "commentable_type", null: false
@@ -25,22 +25,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
   create_table "friendship_requests", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "recipient_id", null: false
-    t.integer "friendship_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["friendship_id"], name: "index_friendship_requests_on_friendship_id"
-    t.index ["recipient_id"], name: "index_friendship_requests_on_recipient_id"
-    t.index ["sender_id"], name: "index_friendship_requests_on_sender_id"
   end
 
   create_table "friendships", force: :cascade do |t|
     t.integer "pet_id", null: false
-    t.integer "friend_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["pet_id"], name: "index_friendships_on_pet_id"
   end
 
@@ -81,6 +75,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
     t.index ["owner_id"], name: "index_pets_on_owner_id"
   end
 
+  create_table "playdate_participants", force: :cascade do |t|
+    t.integer "owner_id", null: false
+    t.integer "pet_id", null: false
+    t.integer "playdate_id", null: false
+    t.integer "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_playdate_participants_on_owner_id"
+    t.index ["pet_id"], name: "index_playdate_participants_on_pet_id"
+    t.index ["playdate_id"], name: "index_playdate_participants_on_playdate_id"
+  end
+
   create_table "playdates", force: :cascade do |t|
     t.integer "owner_id", null: false
     t.integer "pet_id", null: false
@@ -98,10 +104,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
 
   create_table "posts", force: :cascade do |t|
     t.text "content"
-    t.integer "pet_profile_id", null: false
+    t.integer "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pet_profile_id"], name: "index_posts_on_pet_profile_id"
+    t.index ["profile_id"], name: "index_posts_on_profile_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -123,16 +129,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_18_053817) do
   end
 
   add_foreign_key "comments", "pets"
-  add_foreign_key "friendship_requests", "friendships"
-  add_foreign_key "friendship_requests", "recipients"
-  add_foreign_key "friendship_requests", "senders"
-  add_foreign_key "friendships", "friends"
   add_foreign_key "friendships", "pets"
   add_foreign_key "owners", "users"
   add_foreign_key "pets", "owners"
+  add_foreign_key "playdate_participants", "owners"
+  add_foreign_key "playdate_participants", "pets"
+  add_foreign_key "playdate_participants", "playdates"
   add_foreign_key "playdates", "owners"
   add_foreign_key "playdates", "pets"
-  add_foreign_key "posts", "pet_profiles"
+  add_foreign_key "posts", "profiles"
   add_foreign_key "profiles", "owners"
   add_foreign_key "profiles", "pets"
 end

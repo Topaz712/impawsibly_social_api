@@ -8,6 +8,8 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+require 'faker'
+
 # Users creation
 (1..5).each do |i|
   user = User.create(
@@ -37,26 +39,37 @@
     )
 
     # pet profile creation
-    pet.create.profile(
+    pet.create_profile(
       bio: Faker::Lorem.sentence
     )
   end
+  profile.save
 
   # pet posts
-  rand(1..10).times do
-    pet.posts.create(
-      content: Faker::Lorem.paragraph
-    )
+  owner.pets.each do |pet|
+    rand(1..10).times do
+      pet.posts.create(
+        content: Faker::Lorem.paragraph
+      )
+    end
   end
 
   # create random playdate events
   rand(1..3).times do
-    owner.playdates.create(
+    playdate = owner.playdates.create(
       title: Faker::Lorem.sentence,
       content: Faker::Lorem.paragraph,
       pet_limit: rand(1..7),
       start_date_time: Faker::Time.forward(days: 25, period: :morning),
       end_date_time: Faker::Time.forward(days: 25, period: :morning)
     )
+
+    # create playdate participants
+    owner.pets.each do |pet|
+      playdate_participants = playdate.playdate_participants.create(
+        pet: pet,
+        rating: rand(1..5)
+      )
+    end
   end
 end

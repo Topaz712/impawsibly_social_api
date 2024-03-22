@@ -2,7 +2,7 @@ class CreatePosts < ActiveRecord::Migration[7.1]
   def change
     create_table :posts do |t|
       t.text :content
-      t.references :pet_profile, null: false, foreign_key: true
+      t.references :profile, null: false, foreign_key: true
 
       t.timestamps
     end
