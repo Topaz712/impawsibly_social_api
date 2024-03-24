@@ -67,6 +67,6 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:profile).permit(:bio)
+    params.permit(:bio, :pet_id, :owner_id)
   end
 end

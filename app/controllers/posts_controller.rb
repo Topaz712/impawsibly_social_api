@@ -1,16 +1,16 @@
 class PostsController < ApplicationController
   before_action :authenticate_request
   before_action :set_pet_and_profile, only: [:create]
-  before_action :set_post, only: [:show, :update, :destroy]
+  before_action :set_post, only: [:update, :destroy]
 
-  def index
-    posts = @profile.posts.all
-    render json: posts, status: :ok
-  end
+  # def index
+  #   posts = @pet.posts.all
+  #   render json: posts, status: :ok
+  # end
 
-  def show
-    render json: @post, status: :ok
-  end
+  # def show
+  #   render json: @post, status: :ok
+  # end
 
   def create
     pet = Pet.find_by(id: params[:pet_id])
@@ -57,11 +57,11 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = @profile.posts.find(params[:id])
+    @post = @profile.Post.find(params[:id])
   end
 
   # specific pet profile for post
   def post_params
-    params.permit(:content)
+    params.permit(:content, :profile_id)
   end
 end
