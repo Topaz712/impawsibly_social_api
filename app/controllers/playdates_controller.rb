@@ -87,6 +87,6 @@ class PlaydatesController < ApplicationController
   end
 
   def playdate_params
-    params.permit(:title, :content, :start_date_time, :end_date_time, :guests, :cover_image, :sport_ids => [])
+    params.permit(:title, :content, spe :start_date_time, :end_date_time)
   end
 end
