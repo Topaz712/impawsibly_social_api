@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   resources :friendship_requests, only: [:create]
   resources :friendships, only: [:create]
 
+  resources :posts
   resources :pets do
-    resources :posts, only: [:create, :index]
+    get 'posts', to: "pets#posts_index"
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
