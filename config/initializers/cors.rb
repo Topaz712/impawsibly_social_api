@@ -7,6 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
+    # TODO: change to frontends url
     origins "*"
 
     resource "*",
