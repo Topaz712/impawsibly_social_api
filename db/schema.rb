@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_22_163021) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_27_152808) do
   create_table "comments", force: :cascade do |t|
     t.integer "pet_id", null: false
     t.string "commentable_type", null: false
@@ -72,7 +72,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_163021) do
     t.integer "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "profile_id"
     t.index ["owner_id"], name: "index_pets_on_owner_id"
+    t.index ["profile_id"], name: "index_pets_on_profile_id"
   end
 
   create_table "playdate_participants", force: :cascade do |t|
@@ -132,6 +134,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_163021) do
   add_foreign_key "friendships", "pets"
   add_foreign_key "owners", "users"
   add_foreign_key "pets", "owners"
+  add_foreign_key "pets", "profiles"
   add_foreign_key "playdate_participants", "owners"
   add_foreign_key "playdate_participants", "pets"
   add_foreign_key "playdate_participants", "playdates"
