@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   resources :friendship_requests, only: [:create]
   resources :friendships, only: [:create]
 
-  resources :posts
+ # on a specific resource so required id/specific posts
   resources :pets do
-    get 'posts', to: "pets#posts_index"
+    get 'posts', to: "pets#posts_index", on: :member
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
