@@ -13,7 +13,7 @@ class Pet < ApplicationRecord
   has_many :playdates, through: :playdate_participants
   
   has_one :profile, dependent: :destroy
-  after_create :create_profile
+  # after_create :create_profile
 
   has_many :sent_friendship_requests, class_name: 'FriendshipRequest', foreign_key: 'sender_id', dependent: :destroy
   has_many :received_friendship_requests, class_name: 'FriendshipRequest', foreign_key: 'recipient_id', dependent: :destroy

@@ -93,14 +93,19 @@ ActiveRecord::Base.transaction do
         owner_id: owner.id
       )
 
-      Profile.create!(
+      profile = Profile.create!(
         bio: Faker::Lorem.sentence,
         pet_id: pet.id,
         owner_id: owner.id
       )
+      # puts profile.pet.name
+      # puts pet.name
+      # puts pet.profile_id
+      # puts profile.id
 
-      rand(1..10).times do 
-        posts = Post.create!(
+      rand(1..10).times do
+        #  puts pet.profile_id
+        Post.create!(
           content: Faker::Lorem.paragraph,
           profile_id: pet.profile.id
         )
@@ -108,13 +113,16 @@ ActiveRecord::Base.transaction do
     end
 
     rand(1..3).times do 
+      pet = owner.pets.sample
+      puts pet
       playdate = Playdate.create!(
         title: Faker::Lorem.sentence,
         content: Faker::Lorem.paragraph,
         pet_limit: rand(1..7),
+        species_specific: Faker::Boolean.boolean(true_ratio: 1),
         start_date_time: Faker::Time.forward(days: 25, period: :morning),
         end_date_time: Faker::Time.forward(days: 25, period: :evening),
-        pet_id: owner.pet.id,
+        pet_id: pet.id,
         owner_id: owner.id
       )
 
