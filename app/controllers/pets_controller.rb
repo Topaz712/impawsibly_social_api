@@ -1,6 +1,6 @@
 class PetsController < ApplicationController
   before_action :authenticate_request, only: [:index, :show, :update, :destroy]
-  before_action :set_pet, only: [:show, :update, :destroy]
+  before_action :set_pet, only: [:show, :update, :destroy, :posts_index]
 
   def index
     pets = Pet.all
@@ -34,6 +34,16 @@ class PetsController < ApplicationController
       render json: nil, status: :ok
     else
       render json: @pet.errors, status: :unprocessable_entity
+    end
+  end
+
+  # if profile for pet is found, fetch posts associated with that profile 
+  def posts_index
+    if @pet.profile.present?
+      pet_posts = @pet.profile.posts
+      render json: pet_posts, status: :ok
+    else
+      render json: { error: "Profile not found for the pet" }, status: :not_found
     end
   end
 
