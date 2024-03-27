@@ -3,4 +3,6 @@ class Profile < ApplicationRecord
 
   belongs_to :owner
   belongs_to :pet, optional: true
+
+  has_many :posts
 end
