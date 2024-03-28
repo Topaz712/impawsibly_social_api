@@ -4,7 +4,7 @@ class PlaydateBlueprint < Blueprinter::Base
   identifier :id
 
   view :profile do
-    fields  :title, :content, :start_date_time, :end_date_time, :pet_limit, :species_specific
+    fields :title, :content, :start_date_time, :end_date_time, :pet_limit, :species_specific
   end
 
   view :short do
