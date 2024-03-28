@@ -11,6 +11,11 @@ class UserBlueprint < Blueprinter::Base
     fields :username
   end
 
+  view :profile do
+    include_view :normal
+    association :owner, blueprint: OwnerBlueprint, view: :profile
+  end
+
   view :extended do
     fields :username, :email, :created_at, :updated_at
   end
