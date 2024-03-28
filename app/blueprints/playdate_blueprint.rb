@@ -10,6 +10,7 @@ class PlaydateBlueprint < Blueprinter::Base
   view :short do
     fields :title, :pet_limit, :start_date_time, :end_date_time
     association :creator, blueprint: OwnerBlueprint, view: :normal
+    association :location, blueprint: LocationBlueprint
   end
 
   view :long do
