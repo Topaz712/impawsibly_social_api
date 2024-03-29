@@ -53,12 +53,12 @@ class PostsController < ApplicationController
   private
 
   def set_pet_and_profile
-    @pet = Pet.find(params[:pet_id])
+    @pet = Pet.find_by(params[:pet_id])
     @profile = @pet.profile
   end
 
   def set_post
-    @post = @profile.Post.find(params[:id])
+    @post = Post.find_by(params[:id])
   end
 
   # specific pet profile for post
