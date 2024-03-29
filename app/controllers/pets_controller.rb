@@ -1,6 +1,6 @@
 class PetsController < ApplicationController
   before_action :authenticate_request, only: [:index, :show, :update, :destroy]
-  before_action :set_pet, only: [:show, :update, :destroy, :posts_index]
+  before_action :set_pet, only: [:show, :update, :destroy]
 
   def index
     pets = Pet.all
