@@ -10,7 +10,8 @@ class PetBlueprint < Blueprinter::Base
   end
 
   view :long do
-    include_view :short, fields: [:breed, :sex, :is_vaccinated, :is_fixed]
+    include_view :short
+    fields :breed, :sex, :is_vaccinated, :is_fixed
     association :posts, blueprint: PostBlueprint, view: :profile
     association :comments, blueprint: CommentBlueprint, view: :profile
     association :playdates, blueprint: PlaydateBlueprint, view: :profile
