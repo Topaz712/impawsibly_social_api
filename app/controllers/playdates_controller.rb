@@ -12,7 +12,7 @@ class PlaydatesController < ApplicationController
     }
   end
 
-  # localhost:3000/events/:id
+  # localhost:3000/playdates/:id
   def show
     render json: PlaydateBlueprint.render_as_hash(@playdate, view: :long, current_user: @current_user), status: :ok
   end
@@ -87,6 +87,6 @@ class PlaydatesController < ApplicationController
   end
 
   def playdate_params
-    params.permit(:title, :content, spe :start_date_time, :end_date_time)
+    params.permit(:title, :content, :species_specific, :pet_limit, :start_date_time, :end_date_time, :cover_image, :owner_id, :pet_id)
   end
 end

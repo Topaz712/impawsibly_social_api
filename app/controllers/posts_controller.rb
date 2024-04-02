@@ -63,6 +63,6 @@ class PostsController < ApplicationController
 
   # specific pet profile for post
   def post_params
-    params.permit(:content, :profile_id)
+    params.permit(:content, :profile_id, :images [])
   end
 end
