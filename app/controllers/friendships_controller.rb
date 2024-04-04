@@ -16,4 +16,3 @@ class FriendshipsController < ApplicationController
     params.permit(:pet_id, :friend_id)
   end
 end
-end
