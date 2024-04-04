@@ -87,6 +87,6 @@ class PlaydatesController < ApplicationController
   end
 
   def playdate_params
-    params.permit(:title, :content, :species_specific, :pet_limit, :start_date_time, :end_date_time, :cover_image, :owner_id, :pet_id)
+    params.permit(:title, :content, :species_specific, :pet_limit, :start_date_time, :end_date_time, :cover_image, :user_id, :pet_id)
   end
 end

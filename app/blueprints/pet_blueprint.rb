@@ -5,8 +5,7 @@ class PetBlueprint < Blueprinter::Base
 
   view :short do
     fields :name, :species, :birthday
-    association :owner, blueprint: OwnerBlueprint, view: :short
-    association :profile, blueprint: ProfileBlueprint, view: :short
+    association :user, blueprint: UserBlueprint, view: :short
   end
 
   view :long do
@@ -15,8 +14,6 @@ class PetBlueprint < Blueprinter::Base
     association :posts, blueprint: PostBlueprint, view: :profile
     association :comments, blueprint: CommentBlueprint, view: :profile
     association :playdates, blueprint: PlaydateBlueprint, view: :profile
-    association :sent_friend_requests, blueprint: FriendshipRequestBlueprint, view: :short
-    association :received_friend_requests, blueprint: FriendshipRequestBlueprint, view: :short
     association :friends, blueprint: FriendshipBlueprint, view: :short
   end
 

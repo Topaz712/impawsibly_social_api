@@ -1,8 +1,8 @@
 class Pet < ApplicationRecord
-  validates :name, :species, :breed, :sex, :birthday, presence: true
+  validates :name, :species, :breed, :sex, :birthday, :bio, presence: true
   validates :is_vaccinated, :is_fixed, presence: true, inclusion: { in: [true, false] }
 
-  belongs_to :owner
+  belongs_to :user
 
   # associations
   has_many :posts, dependent: :destroy

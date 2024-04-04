@@ -9,13 +9,13 @@ class Playdate < ApplicationRecord
   validates :title, :content, :pet_limit, :start_date_time, :end_date_time, presence: true
 
   # associations
-  belongs_to :owner
+  belongs_to :user
   belongs_to :pet
   has_one :location, as: :locationable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :playdate_participants
-  has_many :owners, through: :playdate_participants
+  has_many :users, through: :playdate_participants
   has_many :pets, through: :playdate_participants
 
   def start_date_time_cannot_be_in_past
