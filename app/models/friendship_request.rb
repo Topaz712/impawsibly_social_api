@@ -1,5 +1,5 @@
 class FriendshipRequest < ApplicationRecord
-  validates :sender_id, recipient_id, presence: true
+  validates :sender_id, :recipient_id, presence: true
 
   belongs_to :friendship
 
