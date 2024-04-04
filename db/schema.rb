@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_04_192657) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -63,7 +63,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["pet_id"], name: "index_friendships_on_pet_id"
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -79,16 +81,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
     t.index ["locationable_type", "locationable_id"], name: "index_locations_on_locationable"
   end
 
-  create_table "owners", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "contact_information"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_owners_on_user_id"
-  end
-
   create_table "pets", force: :cascade do |t|
     t.string "name"
     t.string "species"
@@ -97,28 +89,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
     t.date "birthday"
     t.boolean "is_vaccinated"
     t.boolean "is_fixed"
-    t.integer "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "profile_id"
-    t.index ["owner_id"], name: "index_pets_on_owner_id"
-    t.index ["profile_id"], name: "index_pets_on_profile_id"
+    t.integer "user_id", null: false
+    t.text "bio"
+    t.index ["user_id"], name: "index_pets_on_user_id"
   end
 
   create_table "playdate_participants", force: :cascade do |t|
-    t.integer "owner_id", null: false
     t.integer "pet_id", null: false
     t.integer "playdate_id", null: false
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_playdate_participants_on_owner_id"
+    t.integer "user_id", null: false
     t.index ["pet_id"], name: "index_playdate_participants_on_pet_id"
     t.index ["playdate_id"], name: "index_playdate_participants_on_playdate_id"
+    t.index ["user_id"], name: "index_playdate_participants_on_user_id"
   end
 
   create_table "playdates", force: :cascade do |t|
-    t.integer "owner_id", null: false
     t.integer "pet_id", null: false
     t.text "title"
     t.text "content"
@@ -128,26 +118,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
     t.datetime "end_date_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_playdates_on_owner_id"
+    t.integer "user_id", null: false
     t.index ["pet_id"], name: "index_playdates_on_pet_id"
+    t.index ["user_id"], name: "index_playdates_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
     t.text "content"
-    t.integer "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["profile_id"], name: "index_posts_on_profile_id"
-  end
-
-  create_table "profiles", force: :cascade do |t|
-    t.text "bio"
-    t.integer "pet_id"
-    t.integer "owner_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_profiles_on_owner_id"
-    t.index ["pet_id"], name: "index_profiles_on_pet_id"
+    t.integer "pet_id", null: false
+    t.index ["pet_id"], name: "index_posts_on_pet_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -156,21 +137,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_062113) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "pets"
   add_foreign_key "friendships", "pets"
-  add_foreign_key "owners", "users"
-  add_foreign_key "pets", "owners"
-  add_foreign_key "pets", "profiles"
-  add_foreign_key "playdate_participants", "owners"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "pets", "users"
   add_foreign_key "playdate_participants", "pets"
   add_foreign_key "playdate_participants", "playdates"
-  add_foreign_key "playdates", "owners"
+  add_foreign_key "playdate_participants", "users"
   add_foreign_key "playdates", "pets"
-  add_foreign_key "posts", "profiles"
-  add_foreign_key "profiles", "owners"
-  add_foreign_key "profiles", "pets"
+  add_foreign_key "playdates", "users"
+  add_foreign_key "posts", "pets"
 end
