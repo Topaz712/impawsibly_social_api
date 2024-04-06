@@ -8,7 +8,7 @@ class Post < ApplicationRecord
   validates :content, presence: true, length: {maximum: 2500}
 
   # associations
-  belongs_to :profile
+  belongs_to :pet
   has_many :comments, as: :commentable, dependent: :destroy
 
   def post_image_url

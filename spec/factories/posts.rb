@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :post do
-    content { "MyText" }
-    pet_profile { nil }
+    content { Faker::Lorem.sentence }
+    pet 
   end
 end

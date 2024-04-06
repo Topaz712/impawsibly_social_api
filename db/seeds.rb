@@ -68,46 +68,32 @@ require 'faker'
 ActiveRecord::Base.transaction do 
   (1..5).each do |i|
     user = User.create!(
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
       username: Faker::Internet.username(specifier: 3..20, separators: %w(_)),
       email: Faker::Internet.email,
       password: 'password',
       password_confirmation: 'password'
     )
 
-    owner = Owner.create!(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      contact_information: Faker::PhoneNumber.phone_number,
-      user_id: user.id
-    )
-
     rand(1..5).times do
       pet = Pet.create!(
         name: Faker::Creature::Dog.name,
+        bio: Faker::Lorem.sentence
         species: 'Dog',
         breed: Faker::Creature::Dog.breed,
         sex: Faker::Creature::Dog.gender,
         birthday: Faker::Date.birthday(min_age: 1, max_age: 10),
         is_vaccinated: Faker::Boolean.boolean(true_ratio: 1),
         is_fixed: Faker::Boolean.boolean(true_ratio: 1),
-        owner_id: owner.id
+        user_id: user.id
       )
-
-      profile = Profile.create!(
-        bio: Faker::Lorem.sentence,
-        pet_id: pet.id,
-        owner_id: owner.id
-      )
-      # puts profile.pet.name
-      # puts pet.name
-      # puts pet.profile_id
-      # puts profile.id
 
       rand(1..10).times do
-        #  puts pet.profile_id
+        #  puts pet.post
         Post.create!(
           content: Faker::Lorem.paragraph,
-          profile_id: pet.profile.id
+          pet_id: pet.id
         )
       end
     end
@@ -123,12 +109,12 @@ ActiveRecord::Base.transaction do
         start_date_time: Faker::Time.forward(days: 25, period: :morning),
         end_date_time: Faker::Time.forward(days: 25, period: :evening),
         pet_id: pet.id,
-        owner_id: owner.id
+        user_id: user.id
       )
 
-      owner.pets.each do |pet|
+      user.pets.each do |pet|
         PlaydateParticipant.create!(
-          owner_id: owner.id,
+          user_id: user.id,
           pet_id: pet.id,
           playdate_id: playdate.id,
           rating: rand(1..5)

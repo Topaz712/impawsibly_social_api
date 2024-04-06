@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :playdate_participant do
-    owner { nil }
-    pet { nil }
-    playdate { nil }
+    owner 
+    pet 
+    playdate 
     rating { 1 }
   end
 end

@@ -1,11 +1,9 @@
 class PostsController < ApplicationController
   # before_action :authenticate_request
-  before_action :set_pet, only: [:create]
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    posts = @pet.posts.all
-    # posts = Post.all
+    posts = Post.all
     render json: posts, status: :ok
   end
 
@@ -20,13 +18,7 @@ class PostsController < ApplicationController
       return
     end
     
-    profile = pet.profile
-    if profile.nil?
-      render json: { error: "Profile not found for the pet" }, status: :not_found
-      return
-    end
-    
-    post = profile.posts.new(post_params)
+    post = pet.posts.new(post_params)
     if post.save
       render json: post, status: :created
     else
@@ -52,15 +44,10 @@ class PostsController < ApplicationController
 
   private
 
-  def set_pet
-    @pet = Pet.find_by(params[:id])
-  end
-
   def set_post
     @post = Post.find_by(params[:id])
   end
 
-  # specific pet for post
   def post_params
     params.permit(:content, :pet_id, :images [])
   end

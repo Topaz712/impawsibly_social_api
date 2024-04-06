@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
-    pet { nil }
-    commentable { nil }
+    pet 
+    commentable 
     content { "MyText" }
   end
 end

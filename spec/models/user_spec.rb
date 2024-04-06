@@ -11,6 +11,16 @@ RSpec.describe User, type: :model do
       user = build(:user, username: nil)
       expect(user).to_not be_valid
     end
+
+    it 'is not valid without a first name' do
+      user = build(:user, first_name: nil)
+      expect(user).to_not be_valid
+    end
+
+    it 'is not valid without a last name' do
+      user = build(:user, last_name: nil)
+      expect(user).to_not be_valid
+    end
   
     it 'is not valid without an email' do
       user = build(:user, email: nil)
@@ -36,11 +46,11 @@ RSpec.describe User, type: :model do
 
   context 'Uniqueness tests' do
     it 'is not valid without a unique username' do
-      owner1 = create(:user)
-      owner2 = build(:user, username: owner1.username)
+      user1 = create(:user)
+      user2 = build(:user, username: user1.username)
 
-      expect(owner2).not_to be_valid
-      expect(owner2.errors[:username]).to include("has already been taken")
+      expect(user2).not_to be_valid
+      expect(user2.errors[:username]).to include("has already been taken")
     end
 
     it 'is not valid without a unique email' do
@@ -56,4 +66,21 @@ RSpec.describe User, type: :model do
     let (:user) { create(:user) }
     let (:user_id) {user.id}
   end
+
+  before do
+    user.destroy
+  end
+
+  # deletes pets associated with user
+  it 'deletes the pets of a user' do
+    pet = Pet.find_by(user_id: user.id)
+    expect(pet).to be_nil
+  end
+
+  # deletes user location
+  it 'deletes location' do
+    location = Location.find_by(locationable_id: user_id)
+    expect(location).to be_nil
+  end
+
 end

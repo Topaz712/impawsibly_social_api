@@ -1,6 +1,7 @@
 class Pet < ApplicationRecord
   validates :name, :species, :breed, :sex, :birthday, :bio, presence: true
   validates :is_vaccinated, :is_fixed, presence: true, inclusion: { in: [true, false] }
+  validates :birthday_age, numericality: { greater_than: 0 }
 
   belongs_to :user
 
@@ -21,7 +22,9 @@ class Pet < ApplicationRecord
   has_many :friendships, foreign_key: 'pet_id', dependent: :destroy
   has_many :friends, through: :friendships, source: :friend
 
-  def age
+  private 
+
+  def birthday_age
     ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor
   end
 end

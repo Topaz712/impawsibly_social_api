@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :location do
-    locationable { nil }
+    locationable 
     zip_code { "MyString" }
     city { "MyString" }
     state { "MyString" }
