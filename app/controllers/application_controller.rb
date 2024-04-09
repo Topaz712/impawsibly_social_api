@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  # to abstract token, decode it, and verify it
   def authenticate_request
     header = request.headers['Authorization']
     header = header.split(' ').last if header

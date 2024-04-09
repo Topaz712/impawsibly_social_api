@@ -4,21 +4,22 @@ class PetBlueprint < Blueprinter::Base
   identifier :id
 
   view :short do
-    fields :name, :species, :birthday
+    fields :name, :bio, :species, :birthday
     association :user, blueprint: UserBlueprint, view: :short
   end
 
   view :long do
     include_view :short
     fields :breed, :sex, :is_vaccinated, :is_fixed
-    association :posts, blueprint: PostBlueprint, view: :profile
     association :comments, blueprint: CommentBlueprint, view: :profile
-    association :playdates, blueprint: PlaydateBlueprint, view: :profile
     association :friends, blueprint: FriendshipBlueprint, view: :short
+
+    association :posts, blueprint: PostBlueprint, view: :profile do |user, options|
+      user.posts.order(created_at: :desc).limit(5)
+    end
+    association :playdates, blueprint: PlaydateBlueprint, view: :profile do |user, options|
+      user.playdates.order(start_date_time: :desc).limit(5)
+    end
   end
 
-  view :profile do
-    include_view :short
-    include_view :long
-  end
 end

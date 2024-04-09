@@ -5,7 +5,7 @@ class PostBlueprint < Blueprinter::Base
 
   view :profile do
     fields :content, :created_at, :post_image_url
-    association :pet, blueprint: PetBlueprint, view: :profile
+    association :pet, blueprint: PetBlueprint
     association :comments, blueprint: CommentBlueprint, view: :profile
   end
 end

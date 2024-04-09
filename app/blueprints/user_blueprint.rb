@@ -12,11 +12,8 @@ class UserBlueprint < Blueprinter::Base
   end
 
   view :profile do
-    association :pets, blueprint:PetBlueprint
+    association :pets, blueprint:PetBlueprint, view: :long
     association :location, blueprint: LocationBlueprint
-    association :posts, blueprint: PostBlueprint, view: :profile do |user, options|
-      user.posts.order(created_at: :desc).limit(5)
-    end
 
     association :playdates, blueprint: PlaydateBlueprint, view: :profile do |user, options|
       user.playdates.order(start_date_time: :desc).limit(5)

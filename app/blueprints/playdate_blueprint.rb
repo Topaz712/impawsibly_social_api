@@ -9,16 +9,16 @@ class PlaydateBlueprint < Blueprinter::Base
 
   view :short do
     fields :title, :pet_limit, :start_date_time, :end_date_time
-    association :creator, blueprint: OwnerBlueprint, view: :normal
+    association :creator, blueprint: UserBlueprint, view: :normal
     association :location, blueprint: LocationBlueprint
   end
 
   view :long do
     include_view :short
     fields :content, :species_specific, :cover_image_url
-    association :human_participants, blueprint: OwnerBlueprint, view: :normal
+    association :human_participants, blueprint: UserBlueprint, view: :normal
     association :pet_participants, blueprint: PetBlueprint, view: :short
-    association :creator, blueprint: OwnerBlueprint, view: :normal
+    association :creator, blueprint: UserBlueprint, view: :normal
     association :location, blueprint: LocationBlueprint
     field :has_joined do |playdate, options|
       playdate.has_joined?(options[:current_user])
