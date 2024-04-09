@@ -5,6 +5,7 @@ gem 'bcrypt'
 gem 'blueprinter'
 gem 'jwt'
 gem 'kaminari'
+gem 'pusher'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.1.3'
