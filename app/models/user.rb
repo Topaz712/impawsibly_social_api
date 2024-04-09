@@ -17,6 +17,9 @@ class User < ApplicationRecord
   has_many :playdate_participants
   has_many :playdates, through: :playdate_participants
 
+  # when user is created, create pet
+  # after_create :create_pet
+
   before_create :downcase_email
 
   private 

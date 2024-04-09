@@ -9,14 +9,15 @@ class Playdate < ApplicationRecord
   validates :title, :content, :pet_limit, :start_date_time, :end_date_time, presence: true
 
   # associations
-  belongs_to :user
+  # rename an attribute as long as it points to the id where it associates
+  belongs_to :creator, class_name: "User", foreign_key: "user_id"
   belongs_to :pet
   has_one :location, as: :locationable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :playdate_participants
-  has_many :users, through: :playdate_participants
-  has_many :pets, through: :playdate_participants
+  has_many :human_participants, through: :playdate_participants, source: :user
+  has_many :pet_participants, through: :playdate_participants, source: :pet
 
   def start_date_time_cannot_be_in_past
     if start_date_time.present? && start_date_time < DateTime.now

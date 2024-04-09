@@ -79,7 +79,7 @@ ActiveRecord::Base.transaction do
     rand(1..5).times do
       pet = Pet.create!(
         name: Faker::Creature::Dog.name,
-        bio: Faker::Lorem.sentence
+        bio: Faker::Lorem.sentence,
         species: 'Dog',
         breed: Faker::Creature::Dog.breed,
         sex: Faker::Creature::Dog.gender,
@@ -99,8 +99,9 @@ ActiveRecord::Base.transaction do
     end
 
     rand(1..3).times do 
-      pet = owner.pets.sample
+      pet = user.pets.sample
       puts pet
+      # user.created_playdates.create(
       playdate = Playdate.create!(
         title: Faker::Lorem.sentence,
         content: Faker::Lorem.paragraph,

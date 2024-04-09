@@ -51,10 +51,10 @@ class PlaydatesController < ApplicationController
     return render json: { error: "You can't join your own playdate." }, status: :unprocessable_entity if playdate.creator.id == @current_user.id
 
     # check if the event is full
-    return render json: { error: "Playdate is full" }, status: :unprocessable_entity if playdate.participants.count >= playdate.guests
+    return render json: { error: "Playdate is full, please join a different Playdate." }, status: :unprocessable_entity if playdate.participants.count >= playdate.guests
 
     # check if the current user is already a participant
-    return render json: { error: "You are already a participant" }, status: :unprocessable_entity if playdate.participants.include?(@current_user)
+    return render json: { error: "You are already a participant." }, status: :unprocessable_entity if playdate.participants.include?(@current_user)
 
     # after going through validations, add current user to list of playdate participants
     playdate.participants << @current_user
@@ -87,6 +87,6 @@ class PlaydatesController < ApplicationController
   end
 
   def playdate_params
-    params.permit(:title, :content, :species_specific, :pet_limit, :start_date_time, :end_date_time, :cover_image, :user_id, :pet_id)
+    params.permit(:title, :content, :species_specific, :pet_limit, :start_date_time, :end_date_time, :cover_image, :pet_id)
   end
 end

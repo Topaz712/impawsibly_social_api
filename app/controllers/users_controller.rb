@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def show 
     user = User.find_by(id: params[:id])
 
-    render json: UserBlueprint.render(user, view: :normal), status: :ok
+    render json: UserBlueprint.render(@user, view: :normal), status: :ok
   end
 
   def create
