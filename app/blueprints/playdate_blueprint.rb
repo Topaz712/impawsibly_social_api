@@ -14,8 +14,7 @@ class PlaydateBlueprint < Blueprinter::Base
   end
 
   view :long do
-    include_view :short
-    fields :content, :species_specific, :cover_image_url
+    fields :title, :pet_limit, :start_date_time, :end_date_time, :content, :species_specific, :cover_image_url
     association :human_participants, blueprint: UserBlueprint, view: :normal
     association :pet_participants, blueprint: PetBlueprint, view: :short
     association :creator, blueprint: UserBlueprint, view: :normal

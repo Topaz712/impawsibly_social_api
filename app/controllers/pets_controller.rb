@@ -8,11 +8,13 @@ class PetsController < ApplicationController
   end
 
   def show
-    render json: { pet: @pet, age: @pet.age }, status: :ok
+    user = User.find_by(username: params[:username])
+    pet = user.pet
+    render json: PetBlueprint.render{ pet, view:short }, status: :ok
   end
 
   def create
-    pet = Pet.new(pet_params)
+    pet = @current_user.pets.new(pet_params)
 
     if pet.save
       render json: pet, status: :created
@@ -37,13 +39,15 @@ class PetsController < ApplicationController
     end
   end
 
-  # if profile for pet is found, fetch posts associated with that profile 
+  # if post for pet is found, fetch posts associated with that pet
   def posts_index
-    if @pet.profile.present?
-      pet_posts = @pet.profile.posts
+    if @pet.post.present?
+      user = User.find(params[:pet_id])
+      pet_posts = pet.posts
+      
       render json: pet_posts, status: :ok
     else
-      render json: { error: "Profile not found for the pet" }, status: :not_found
+      render json: { error: "Post not found for pet" }, status: :not_found
     end
   end
 

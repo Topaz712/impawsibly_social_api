@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  # before_action :authenticate_request
+  before_action :authenticate_request
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
@@ -12,13 +12,13 @@ class PostsController < ApplicationController
   end
 
   def create
-    pet = Pet.find_by(id: params[:pet_id])
+    pet = Pet.find_by(params[:pet_id])
     if pet.nil?
       render json: { error: "Pet not found" }, status: :not_found
       return
     end
     
-    post = pet.posts.new(post_params)
+    post = pets.posts.new(post_params)
     if post.save
       render json: post, status: :created
     else
