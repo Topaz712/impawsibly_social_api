@@ -10,6 +10,12 @@ class Post < ApplicationRecord
   # associations
   belongs_to :pet
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes
+
+  def liked?(user)
+    # checks if user already liked the post/returns true or false
+    !!self.likes.find{|like| like.user.id == user.id}
+  end
 
   def post_image_url
     # url helpers

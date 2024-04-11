@@ -34,6 +34,13 @@ class PostsController < ApplicationController
     end
   end
 
+  def like
+    # grab the post and create a like w/ that post and curr user's id & redirect back to that post
+    @post = Post.all.find(params[:id])
+    Like.create(user_id: @current_user.id, post_id: @post.id)
+    redirect_to post_path(@post)
+  end
+
   def destroy
     if @post.destroy
       render json: nil, status: :ok
