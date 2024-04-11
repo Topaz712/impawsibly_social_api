@@ -7,6 +7,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, length: {minimum: 5, maximum: 255}, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   # associations
+  has_many :comments, dependent: :destroy
   has_many :pets, dependent: :destroy
   has_one :location, as: :locationable, dependent: :destroy
   

@@ -7,7 +7,6 @@ class Pet < ApplicationRecord
 
   # associations
   has_many :posts, dependent: :destroy
-  has_many :comments, dependent: :destroy
 
   # playdate events the pet is participating in
   has_many :playdate_participants

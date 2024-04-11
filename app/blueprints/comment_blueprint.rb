@@ -5,6 +5,6 @@ class CommentBlueprint < Blueprinter::Base
 
   view :profile do
     fields :content
-    association :pet, blueprint: PetBlueprint, view: :short
+    association :user, blueprint: UserBlueprint, view: :short
   end
 end
