@@ -4,6 +4,11 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#create'
   end
   
+  # sends put request w/ post id we want to like
+  resources :like do
+    put '/post/:id/like' to: 'posts#like', as: 'like'
+  end
+
   resources :playdates do
     post 'join', to: 'playdates#join'
     
