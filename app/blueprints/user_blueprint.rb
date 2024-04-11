@@ -8,7 +8,7 @@ class UserBlueprint < Blueprinter::Base
   end
 
   view :normal do
-    fields :username
+    fields :username, :avatar_image_url
   end
 
   view :profile do

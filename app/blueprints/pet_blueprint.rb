@@ -4,13 +4,12 @@ class PetBlueprint < Blueprinter::Base
   identifier :id
 
   view :short do
-    fields :name, :species, :birthday
-    association :user, blueprint: UserBlueprint, view: :short
+    fields :name, :species, :breed, :avatar_image_url
+    association :user, blueprint: UserBlueprint, view: :normal
   end
 
   view :long do
-    fields :name, :bio, :species, :birthday, :breed, :sex, :is_vaccinated, :is_fixed
-    association :comments, blueprint: CommentBlueprint, view: :profile
+    fields :name, :bio, :species, :birthday, :breed, :sex, :is_vaccinated, :is_fixed, :avatar_image_url
     association :friends, blueprint: FriendshipBlueprint, view: :short
 
     association :posts, blueprint: PostBlueprint, view: :profile do |user, options|

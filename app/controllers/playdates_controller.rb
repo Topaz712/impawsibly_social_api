@@ -51,14 +51,15 @@ class PlaydatesController < ApplicationController
     return render json: { error: "You can't join your own playdate." }, status: :unprocessable_entity if playdate.creator.id == @current_user.id
 
     # check if the event is full
-    return render json: { error: "Playdate is full, please join a different Playdate." }, status: :unprocessable_entity if playdate.participants.count >= playdate.guests
+    return render json: { error: "Playdate is full, please join a different Playdate." }, status: :unprocessable_entity if playdate.human_participants.count >= playdate.pet_limit
 
     # check if the current user is already a participant
-    return render json: { error: "You are already a participant." }, status: :unprocessable_entity if playdate.participants.include?(@current_user)
+    return render json: { error: "You are already a participant." }, status: :unprocessable_entity if playdate.human_participants.include?(@current_user)
 
     # after going through validations, add current user to list of playdate participants
-    playdate.participants << @current_user
+    playdate.human_participants << @current_user
 
+    # trigger a playdate event to the creator/user
     Pusher.trigger(playdate.creator.id, 'notification', {
       playdate_id: playdate.id,
       notification: "#{@current_user.username} has joined #{playdate.title}!"
@@ -70,7 +71,7 @@ class PlaydatesController < ApplicationController
   def leave
     playdate = Playdate.find(params[:playdate_id])
 
-    playdate.participants.delete(@current_user)
+    playdate.human_participants.delete(@current_user)
 
     Pusher.trigger(playdate.creator.id, 'notification', {
       playdate_id: playdate.id,

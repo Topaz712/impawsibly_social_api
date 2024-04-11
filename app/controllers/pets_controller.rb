@@ -1,5 +1,5 @@
 class PetsController < ApplicationController
-  before_action :authenticate_request, only: [:index, :show, :update, :destroy]
+  before_action :authenticate_request
   before_action :set_pet, only: [:show, :update, :destroy]
 
   def index
@@ -8,9 +8,11 @@ class PetsController < ApplicationController
   end
 
   def show
-    user = User.find_by(username: params[:username])
-    pet = user.pet
-    render json: PetBlueprint.render{ pet, view:short }, status: :ok
+    if @pet
+      render json: PetBlueprint.render(@pet, view: :short), status: :ok
+    else
+      render json: { error: "Pet not found" }, status: :not_found
+    end
   end
 
   def create
@@ -41,23 +43,22 @@ class PetsController < ApplicationController
 
   # if post for pet is found, fetch posts associated with that pet
   def posts_index
-    if @pet.post.present?
-      user = User.find(params[:pet_id])
-      pet_posts = pet.posts
+    if @pet.present?
+      pet_posts = @pet.posts
       
       render json: pet_posts, status: :ok
     else
-      render json: { error: "Post not found for pet" }, status: :not_found
+      render json: { error: "Pet post not found" }, status: :not_found
     end
   end
 
   private
 
   def set_pet
-    @pet = Pet.find(params[:id])
+    @pet = @current_user.pets.find_by(id: params[:id])
   end
 
   def pet_params
-    params.require(:pet).permit(:name, :species, :breed, :sex, :birthday, :is_vaccinated, :is_fixed, :user_id)
+    params.permit(:name, :bio, :species, :breed, :sex, :birthday, :is_vaccinated, :is_fixed, :avatar_image)
   end
 end

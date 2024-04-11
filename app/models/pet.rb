@@ -5,6 +5,9 @@ class Pet < ApplicationRecord
 
   belongs_to :user
 
+  # active storage
+  has_one_attached :avatar_image
+
   # associations
   has_many :posts, dependent: :destroy
 
@@ -22,6 +25,11 @@ class Pet < ApplicationRecord
   has_many :friends, through: :friendships, source: :friend
 
   private 
+
+  def avatar_image_url
+    # url helpers
+    rails_blob_url(self.avatar_image, only_path: false) if self.avatar_image.attached?
+  end
 
   def birthday_age
     ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor

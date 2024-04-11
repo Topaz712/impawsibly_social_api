@@ -6,6 +6,9 @@ class User < ApplicationRecord
   validate :validate_username
   validates :email, presence: true, uniqueness: true, length: {minimum: 5, maximum: 255}, format: { with: URI::MailTo::EMAIL_REGEXP }
 
+  # active storage
+  has_one_attached :avatar_image
+
   # associations
   has_many :comments, dependent: :destroy
   has_many :pets, dependent: :destroy
@@ -27,6 +30,11 @@ class User < ApplicationRecord
 
   def downcase_email
     self.email = email.downcase
+  end
+
+  def avatar_image_url
+    # url helpers
+    rails_blob_url(self.avatar_image, only_path: false) if self.avatar_image.attached?
   end
 
   def validate_username
