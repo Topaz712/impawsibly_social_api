@@ -35,10 +35,27 @@ class PostsController < ApplicationController
   end
 
   def like
-    # grab the post and create a like w/ that post and curr user's id & redirect back to that post
-    @post = Post.all.find(params[:id])
-    Like.create(user_id: @current_user.id, post_id: @post.id)
-    redirect_to post_path(@post)
+    # grab the post and create a like w/ that post and curr user's id 
+    @post = Post.find(params[:id])
+    like = Like.new(user_id: @current_user.id, post_id: @post.id)
+
+    if like.save
+      render json: { message: "Post liked successfully" }, status: :ok
+    else
+      render json: { error: "Failed to like the post" }, status: :unprocessable_entity
+    end
+  end
+
+  def unlike
+    @post = Post.find(params[:id])
+    like = Like.find_by(user_id: @current_user.id, post_id: @post.id)
+
+    if like
+      like.destroy
+      render json: { message: "Post unliked successfully" }, status: :ok
+    else
+      render json: { error: "You have not liked this post yet" }, status: :unprocessable_entity
+    end
   end
 
   def destroy

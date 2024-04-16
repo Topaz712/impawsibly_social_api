@@ -3,13 +3,18 @@ class PetsController < ApplicationController
   before_action :set_pet, only: [:show, :update, :destroy]
 
   def index
-    pets = Pet.all
-    render json: pets, status: :ok
+    pets = Pet.order(created_at: :desc).page(params[:page]).per(12)
+
+    render json: {
+      pets: PetBlueprint.render_as_hash(pets, view: :short),
+      total_pages: pets.total_pages,
+      current_page: pets.current_page
+    }
   end
 
   def show
     if @pet
-      render json: PetBlueprint.render(@pet, view: :short), status: :ok
+      render json: PetBlueprint.render_as_hash(@pet, view: :short, current_user: @current_user), status: :ok
     else
       render json: { error: "Pet not found" }, status: :not_found
     end
@@ -52,6 +57,12 @@ class PetsController < ApplicationController
     end
   end
 
+  def user_pets
+    user_pets = @current_user.pets
+
+    render json: user_pets, status: :ok
+  end
+  
   private
 
   def set_pet

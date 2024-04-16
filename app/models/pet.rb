@@ -1,7 +1,7 @@
 class Pet < ApplicationRecord
   validates :name, :species, :breed, :sex, :birthday, :bio, presence: true
   validates :is_vaccinated, :is_fixed, presence: true, inclusion: { in: [true, false] }
-  validates :birthday_age, numericality: { greater_than: 0 }
+  
 
   belongs_to :user
 
