@@ -3,11 +3,6 @@ Rails.application.routes.draw do
   scope '/' do
     post '/login', to: 'sessions#create'
   end
-  
-  # sends put request w/ post id we want to like
-  resources :like do
-    put '/post/:id/like' to: 'posts#like', as: 'like'
-  end
 
   resources :playdates do
     post 'join', to: 'playdates#join'
@@ -20,16 +15,25 @@ Rails.application.routes.draw do
     get ':username', to: "profiles#show"
   end
 
-  resources :users, only: [:create, :show]
+  resources :users do
+  end
   resources :friendship_requests, only: [:create]
   resources :friendships, only: [:create]
 
  # on a specific resource so required id/specific posts
   resources :pets do
     get 'posts', to: "pets#posts_index", on: :member
+    
   end
 
-  resources :posts
+  get 'user_pets', to: "pets#user_pets"
+
+  resources :posts do
+    member do
+      post 'like', to: 'posts#like'
+      delete 'unlike', to: 'posts#unlike'
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
