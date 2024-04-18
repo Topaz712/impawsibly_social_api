@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_one_attached :avatar_image
 
   # associations
+  has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :pets, dependent: :destroy
   has_one :location, as: :locationable, dependent: :destroy

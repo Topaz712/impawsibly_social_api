@@ -2,12 +2,14 @@ class Post < ApplicationRecord
   include Rails.application.routes.url_helpers
   
   # active storage
-  has_many_attached :images
+  # has_many_attached :images
+  has_one_attached :images
 
   # validations
   validates :content, presence: true, length: {maximum: 2500}
 
   # associations
+  belongs_to :user
   belongs_to :pet
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes

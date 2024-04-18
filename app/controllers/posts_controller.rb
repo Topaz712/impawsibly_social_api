@@ -4,7 +4,7 @@ class PostsController < ApplicationController
 
   def index
     posts = Post.all
-    render json: posts, status: :ok
+    render json: PostBlueprint.render(posts, view: :profile), status: :ok
   end
 
   def show
@@ -12,13 +12,16 @@ class PostsController < ApplicationController
   end
 
   def create
-    pet = Pet.find_by(params[:pet_id])
-    if pet.nil?
+    @pet = Pet.find_by(id: params[:pet_id])
+
+    if @pet.nil?
       render json: { error: "Pet not found" }, status: :not_found
-      return
-    end
-    
-    post = pets.posts.new(post_params)
+    return
+  end
+
+    post = @current_user.posts.new(post_params)
+    post.images.attach(params[:images])
+    puts post.images.attached?
     if post.save
       render json: post, status: :created
     else
@@ -58,6 +61,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def create_comment
+    @post = Post.find(params[:id])
+    comment = @post.comments.new(comment_params)
+    comment.user_id = @current_user.id
+  
+    if comment.save
+      render json: comment, status: :created
+    else
+      render json: comment.errors, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     if @post.destroy
       render json: nil, status: :ok
@@ -72,7 +87,11 @@ class PostsController < ApplicationController
     @post = Post.find_by(params[:id])
   end
 
+  def comment_params
+    params.permit(:content, :user_id)
+  end
+
   def post_params
-    params.permit(:content, :pet_id, :images [])
+    params.permit(:content, :pet_id, :user_id, :images)
   end
 end
