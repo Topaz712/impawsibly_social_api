@@ -11,7 +11,7 @@ class Playdate < ApplicationRecord
   # associations
   # rename an attribute as long as it points to the id where it associates
   belongs_to :creator, class_name: "User", foreign_key: "user_id"
-  belongs_to :pet
+  belongs_to :selected_pet, class_name: "Pet", foreign_key: "pet_id"
   has_one :location, as: :locationable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
@@ -34,5 +34,9 @@ class Playdate < ApplicationRecord
   def cover_image_url
     # url helpers
     rails_blob_url(self.cover_image, only_path: false) if self.cover_image.attached?
+  end
+
+  def has_joined?(user)
+    self.human_participants.include?(user)
   end
 end

@@ -14,7 +14,7 @@ class PetsController < ApplicationController
 
   def show
     if @pet
-      render json: PetBlueprint.render_as_hash(@pet, view: :short, current_user: @current_user), status: :ok
+      render json: PetBlueprint.render_as_hash(@pet, view: :normal, current_user: @current_user), status: :ok
     else
       render json: { error: "Pet not found" }, status: :not_found
     end
@@ -32,7 +32,7 @@ class PetsController < ApplicationController
 
   def update
     if @pet.update(pet_params)
-      render json: @pet, status: :ok
+      render json: PetBlueprint.render(@user, view: :long), status: :ok
     else
       render json: @pet.errors, status: :unprocessable_entity
     end
