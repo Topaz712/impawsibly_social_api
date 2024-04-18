@@ -4,35 +4,41 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#create'
   end
 
+   # on a specific resource so required id/specific posts
+   resources :pets do
+    get 'posts', to: "pets#posts_index", on: :member
+  end
+
+  get 'user_pets', to: "pets#user_pets"
+
   resources :playdates do
     post 'join', to: 'playdates#join'
     
     # localhost:3000/playdates/1/leave
     delete 'leave', to: 'playdates#leave'
+
+    member do
+      post 'rate'
+    end
   end
   
   scope :profiles do
     get ':username', to: "profiles#show"
   end
 
-  resources :users do
-  end
   resources :friendship_requests, only: [:create]
   resources :friendships, only: [:create]
 
- # on a specific resource so required id/specific posts
-  resources :pets do
-    get 'posts', to: "pets#posts_index", on: :member
-    
-  end
-
-  get 'user_pets', to: "pets#user_pets"
 
   resources :posts do
     member do
       post 'like', to: 'posts#like'
       delete 'unlike', to: 'posts#unlike'
+      post 'comments', to: 'posts#create_comment'
     end
+  end
+
+  resources :users do
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

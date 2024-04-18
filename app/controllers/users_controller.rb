@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy] 
+  before_action :set_playdate_and_rating, only: [:rate_playdate]
   before_action :authenticate_request, except: [:create]
 
   def index
@@ -41,10 +42,31 @@ class UsersController < ApplicationController
     end
   end
 
+  def user_pets
+    user_pets = @current_user.pets
+
+    render json: user_pets, status: :ok
+  end
+
+  def rate_playdate
+    # user can only rate a playdate if they are a participant of that playdate
+    @playdate_participant = @current_user.playdate_participants.find_by(playdate_id: @playdate.id)
+    return unless @playdate_participant
+
+    @playdate_participant.update(rating: params[:rating])
+  end
+
   private
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_playdate_and_playdate_participant
+    @playdate = Playdate.find_by(id: (params[:id]))
+    return unless @playdate
+
+    @playdate_participant = @current_user.playdate_participants.find_by(playdate_id: @playdate.id)
   end
   
   def user_params

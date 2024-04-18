@@ -44,6 +44,18 @@ class PlaydatesController < ApplicationController
     end
   end
 
+  def rate
+    @playdate = Playdate.find(params[:id])
+    rating = params[:rating].to_i
+
+    if (1..5).include?(rating)
+      current_user.rate_playdate(@playdate, rating)
+      render json: @playdate, status: :ok
+    else
+      render json: @playdate.errors, status: :unprocessable_entity
+    end
+  end
+
   def join
     playdate = Playdate.find(params[:playdate_id])
 
@@ -51,18 +63,29 @@ class PlaydatesController < ApplicationController
     return render json: { error: "You can't join your own playdate." }, status: :unprocessable_entity if playdate.creator.id == @current_user.id
 
     # check if the event is full
-    return render json: { error: "Playdate is full, please join a different Playdate." }, status: :unprocessable_entity if playdate.human_participants.count >= playdate.pet_limit
+    return render json: { error: "Playdate is full, please join a different Playdate." }, status: :unprocessable_entity if playdate.pet_participants.count >= playdate.pet_limit
 
     # check if the current user is already a participant
     return render json: { error: "You are already a participant." }, status: :unprocessable_entity if playdate.human_participants.include?(@current_user)
 
-    # after going through validations, add current user to list of playdate participants
-    playdate.human_participants << @current_user
+     # fetch the pets of the curr user to let them pick which one to join
+    user_pets = @current_user.pets
+    render json: user_pets, status: :ok
+
+    # checks if user has pets
+    return render json: { error: "You don't have any pets to join the playdate with." }, status: :unprocessable_entity if user_pets.empty?
+
+     # after going through validations, add current user and pet to list of playdate participants
+     playdate.human_participants << @current_user
+
+     pet_id = params[:selected_pet]
+     pet = user_pets.find_by(id: pet_id)
+     playdate.pet_participants << pet
 
     # trigger a playdate event to the creator/user
     Pusher.trigger(playdate.creator.id, 'notification', {
       playdate_id: playdate.id,
-      notification: "#{@current_user.username} has joined #{playdate.title}!"
+      notification: "#{@current_user.username} has joined #{playdate.title} with their pet named #{pet.name}!"
     })
 
     head :ok
